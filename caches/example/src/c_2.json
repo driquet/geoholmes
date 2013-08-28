@@ -1,0 +1,10 @@
+{
+  "title": "A popular alternative",
+  "description": "Caesar cipher is one of the simplest and most widely known encryption technique.",
+  "duration": -1,
+  "output": "B=2",
+  "problems":
+    [
+      ["What is the most popular (for us, geocachers) alternative of Caesar cipher?", "rot13", "lowercase"]
+    ]
+}

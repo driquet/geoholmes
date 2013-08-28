@@ -1,0 +1,36 @@
+{% extends "default/base.html" %}
+
+{% block content %}
+
+<div id="container">
+    <form class="log-form"action="{{ url_for('frontend.login') }}" method="post">
+        <h1>Login</h1>
+        {{ form.csrf_token }}
+        {% if form.username.errors %}
+            <div class="alert alert-error" style="padding-bottom:10px;">
+                <ul class="unstyled" style="margin-bottom:0px;">
+                {% for error in form.username.errors %}<li>{{ error }}</li>{% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        <div class="input-prepend">
+            <span class="add-on"><i class="icon-user"></i></span>
+            <input class="input-xlarge" type="text" placeholder="Username" name="username">
+        </div>
+
+        <button class="btn pull-right" type="submit">Login</button>
+        <hr></hr>
+
+        <h4>Why do I need to log in ?</h4>
+        <p>
+            To solve a GeoHolmes cache, you need to solve a sequence of challenges.
+            We need to know your username in order to save your progress.
+        </p>
+        <p>
+            To sum up, no registration, you just have to fill in your nickname (preferably your geocaching.com nickname, so you won't forget it !).
+        </p>
+
+    </form>
+</div>
+
+{% endblock %}

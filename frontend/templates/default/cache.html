@@ -1,0 +1,151 @@
+{% extends "default/base.html" %}
+
+{% block content %}
+
+<div class="row-fluid">
+    <div class="span12 colored-container">
+        <h3><a href="{{ url_for('.show_cache', cache=cache.code) }}">{{ cache.name }} - {{ cache.code }}</a></h3>
+        <p>Cache placed by <a href="mailto:{{ cache.mail }}">{{ cache.author }}</a> 
+        -
+        Geocaching.com link: <a href="{{ cache.url }}">here <i class="icon-globe"></i></a></p>
+
+
+        <h4>Description</h4>
+        {% if cache.description %}
+        {{ cache.description|customize|safe }}
+        {% else %}
+        No description available for this cache.
+        {% endif %}
+
+
+        <h4>Challenge(s)</h4>
+        <p>To get the final coordinates of this cache, you must complete each challenge.<br/>
+        Completed challenges: {{ current_number }}/{{ cache.challenges|length }}.</p>
+        <div class="accordion" id="accordion">
+            {% for challenge in all_challenges %}
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse{{loop.index}}">
+                            Challenge {{ loop.index }} - {{ challenge.title }}
+                            {% if loop.index0 < current_number %}
+                                <i class="icon-ok pull-right" title="You solved this challenge"></i>
+                            {% endif %}
+                            {% if challenge.duration != -1 %}
+                            <i class="icon-time pull-right" title="This challenge is timed"></i>
+                            {% endif %}
+                            <p class="pull-right">{{ stats[loop.index - 1] }}<i class="icon-user" title="Number of users that solved this challenge"></i></p>
+                        </a>
+                    </div>
+                    <div id="collapse{{loop.index}}" class="accordion-body collapse
+                        {% if (just_solved and loop.index0 == current_number - 1) or loop.index0 == current_number %}
+                            in
+                        {% endif %}">
+                        <div class="accordion-inner">
+                            {% if loop.index0 > current_number %}
+                                You must solve previous challenges before trying to solve this one.
+                            {% else %}
+
+
+                                {% if challenge.description %}
+                                    <h5>Description</h5>
+                                    {{ challenge.description|customize|safe }}
+                                {% endif %}
+
+                                {% if loop.index0 < current_number %}
+                                    {% if challenge.output %}
+                                    <h5>Output</h5>
+                                    {% endif %}
+                                    {% if (just_solved and loop.index0 == current_number - 1) %}
+                                        {% with messages = get_flashed_messages(category_filter=["success"]) %}
+                                        {% if messages %}
+                                            {% for message in messages %}
+                                            <div class="alert alert-success">
+                                            {{ message }}
+                                            </div>
+                                            {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                        {% endwith %}
+                                    {% endif %}
+                                    {{ challenge.output|customize|safe }}
+                                {% endif %}
+
+                                {% if loop.index0 == current_number %}
+
+
+                                    {% if current_challenge.duration != -1 %}
+                                    <p class="pull-right">Time left: {{ current_challenge.time_left|round|int }} second(s)</p>
+                                    {% endif %}
+
+                                    <h5>Problem</h5>
+                                    {{ current_challenge.problem|customize|safe }}
+
+                                    {% if current_challenge.hint %}
+                                        <div>
+                                            <a class="btn-mini collapse-data-btn" data-toggle="collapse" href="#details_challenge">Show hint</a>
+                                            <div id="details_challenge" class="collapse">
+                                                <p>{{ current_challenge.hint|customize|safe }}</p>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% with messages = get_flashed_messages(category_filter=["error"]) %}
+                                    {% if messages %}
+                                        {% for message in messages %}
+                                        <div class="alert alert-error">
+                                        {{ message }}
+                                        </div>
+                                        {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                    {% endwith %}
+
+                                    <form class="log-form " action="{{ url_for('frontend.show_cache', cache=cache.code) }}" method="post">
+                                        <h5>Your answer</h5>
+                                        {{ form.csrf_token }}
+                                        {% if form.answer.errors %}
+                                        <div class="alert alert-error" style="padding-bottom:10px;">
+                                            <ul class="unstyled" style="margin-bottom:0px;">
+                                                {% for error in form.answer.errors %}<li>{{ error }}</li>{% endfor %}
+                                            </ul>
+                                        </div>
+                                        {% endif %}
+                                        <div class="input-append">
+                                            <input class="input-xlarge span12" type="text" placeholder="Answer" name="answer">
+                                            <button class="btn" type="submit">Submit</button>
+                                        </div>
+
+                                    </form>
+                                {% endif %}
+                            {% endif %}
+
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if current_number == cache.challenges|length %}
+        <h4>Cache output </h4>
+        {% if cache.hint %}
+        <div>
+            <a class="btn-mini collapse-data-btn" data-toggle="collapse" href="#details_cache">Show hint</a>
+            <div id="details_cache" class="collapse">
+            {{ cache.hint}}
+            </div>
+        </div>
+        {% endif %}
+        {{ cache.output|customize|safe }}
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
+
+{% block js_include %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript">
+$(".accordion").collapse();
+</script>
+{% endblock %}

@@ -1,0 +1,11 @@
+{
+  "title": "Great challenge",
+  "description": "Find the correct answer !",
+  "duration": 50,
+  "output": "congratulation!",
+  "problems":
+    [
+      ["Quelle est la couleur du cheval blanc ?", "blanc", ""],
+      ["Pwet !", "Pwet", ""]
+    ]
+}

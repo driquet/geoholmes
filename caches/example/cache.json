@@ -1,0 +1,14 @@
+{
+  "name": "GeoHolmes Cache: Cesar",
+  "code": "GCZEA44",
+  "author": "Someone",
+  "mail": "some.one@gmail.com",
+  "hint": "To find this cache, look up!",
+  "output": "You solved this challenge, Congratulation! Coordinates are: N... E... !",
+  "description": "",
+  "challenges": [
+    ["ProblemChallenge", "c_1.json"],
+    ["ProblemChallenge", "c_2.json"],
+    ["CustomScriptPython","c_3.py"]
+  ]
+}

@@ -1,0 +1,30 @@
+{% extends "default/base.html" %}
+
+{% block content %}
+
+<div class="row-fluid">
+    <div class="span5 colored-container">
+        <h3>Hide a GeoHolmes caches, it's simple !</h3>
+        <p>Create a GeoHolmes cache is simple : just a bunch of text files that you can write with any text editor.
+        A full guide to explain how to create such a cache will be available soon !</p>
+
+        <h5>Hosting your GeoHolmes cache</h5>
+        <p>Either you choose to install GeoHolmes system on a dedicated server, either you ask this website's owner to host it for you.</p>
+    </div>
+
+    <div class="span7 colored-container">
+        <h3>Available GeoHolmes caches</h3>
+        <ul>
+        {% for cache in caches %}
+        <li>
+        <a href="{{ url_for('.show_cache', cache=cache.code) }}">
+        {{ cache.name }} - {{ cache.code }}
+        </a>
+        {% endfor %}
+        </ul>
+    </div>
+
+</div>
+
+
+{% endblock %}

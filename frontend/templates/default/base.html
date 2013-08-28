@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <!-- start: Meta -->
+        <meta charset="utf-8">
+        <title>{% block title %}GeoHolmes{% endblock %}</title>
+        <!-- end: Meta -->
+
+        <!-- start: Mobile Specific -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <!-- end: Mobile Specific -->
+
+
+        <!-- start: CSS -->
+        <link href="{{ url_for('.static_files', filename='css/bootstrap-responsive.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ url_for('.static_files', filename='css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ url_for('.static_files', filename='css/style.css') }}" rel="stylesheet" type="text/css">
+        <style type="text/css">
+            body {
+                padding-top: 60px;
+                padding-bottom: 40px;
+            }
+        </style>
+        <!-- end: CSS -->
+
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner" style="border: 0px">
+                <div class="container-fluid">
+                    <a class="brand" href="{{ url_for('.home') }}">{{ config.SITE_NAME }}</a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav">
+                        </ul>
+                    </div>
+
+                    <div class="pull-right">
+                        {% if session.user %}
+                        <a class="btn btn-info" href="{{ url_for('.logout') }}" >
+                            {{ session.user.username }} <i class="icon-off icon-white"></i>
+                        </a>
+                        {% else %}
+                        <a class ="btn btn-info" href="{{ url_for('.login') }}" >
+                            Authenticate <i class="icon-user icon-white"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div id="container" class="" style="min-height: 750px;">
+            {% block content %}
+            {% endblock %}
+        </div>
+
+        <div id="footer">
+            <div id="container" class="row-fluid">
+                <div class="span1 offset2">
+                    <a href="http://www.geocaching.com/live/">
+                        <img src="{{ url_for('.static_files', filename='img/live_logo.png')}}"/>
+                    </a>
+                </div>
+                <div class="span8" style="text-align:left;">
+                    <p>
+                    Proudly powered by <a href="">GeoHolmes</a>,<br/>
+                    which takes great advantage of <a href="http://www.geocaching.com/live/">Geocaching Live API</a>, <a href="http://python.org/">Python</a>,
+                    <a href="http://flask.pocoo.org/">Flask</a> and <a href="http://twitter.github.io/bootstrap/">Bootstrap</a>. <br/>
+                    Contact: <a href="mailto:{{ config.CONTACT_MAIL }}">Mail</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Placed at the end of the document so the pages load faster -->
+        {% block js_include %}{% endblock %}
+        <script src="{{ url_for('.static_files', filename='js/bootstrap.min.js') }}"></script>
+    </body>
+</html>
